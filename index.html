@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Suprabhatha interiors</title>
+  <meta name="description" content="Interior brief for the east-facing villa at Suprabhatha Villas, near Kollur. November 2026.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,520;9..144,620&family=Source+Sans+3:ital,wght@0,400;0,560;0,650;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ivory: #f4efe6;
+      --paper: #fbf8f3;
+      --ink: #2a2622;
+      --muted: #6d665e;
+      --line: #e2d9cc;
+      --chip: #efe8dc;
+      --pine: #2f3a32;
+      --sage: #6f7d6a;
+      --clay: #8c5a3c;
+      --warn: #f3e6d4;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: "Source Sans 3", "Segoe UI", sans-serif;
+      font-size: 18px;
+      line-height: 1.55;
+    }
+    main {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+    h1, h2, h3 {
+      font-family: Fraunces, Georgia, serif;
+      font-weight: 520;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0;
+    }
+    h1 { font-size: 46px; }
+    h2 { font-size: 32px; margin-top: 8px; }
+    h3 { font-size: 22px; margin: 22px 0 8px; }
+    p { margin: 0 0 14px; }
+    .lede { color: var(--muted); font-size: 18px; margin-top: 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 28px; }
+    .chips.sub { margin: 8px 0 18px; }
+    button.chip {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--ink);
+      font: 560 15px/1 "Source Sans 3", sans-serif;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    button.chip[aria-pressed="true"] {
+      background: var(--pine);
+      color: #f6f1e8;
+      border-color: var(--pine);
+    }
+    .stats { display: flex; flex-wrap: wrap; gap: 18px 28px; margin: 8px 0 18px; }
+    .stat strong {
+      display: block;
+      font-family: Fraunces, Georgia, serif;
+      font-size: 28px;
+      font-weight: 520;
+    }
+    .stat span { color: var(--muted); font-size: 14px; }
+    .note { color: var(--muted); font-size: 14px; }
+    a { color: var(--clay); }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 15px; }
+    th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+    th { font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); font-weight: 650; }
+    tbody tr:nth-child(even) { background: rgba(255,255,255,0.45); }
+    .wrap { overflow-x: auto; }
+    .callout {
+      background: var(--paper);
+      border-left: 3px solid var(--sage);
+      padding: 12px 16px;
+      margin: 12px 0 4px;
+    }
+    .callout.warn { border-left-color: var(--clay); background: var(--warn); }
+    .callout strong { display: block; margin-bottom: 4px; }
+    .bar { display: grid; grid-template-columns: minmax(140px, 220px) 1fr auto; gap: 10px; align-items: center; margin: 8px 0; font-size: 15px; }
+    .track { height: 8px; background: #e7dfd2; border-radius: 99px; }
+    .fill { height: 8px; background: var(--sage); border-radius: 99px; }
+    .section[hidden] { display: none; }
+    footer { margin-top: 36px; color: var(--muted); font-size: 14px; }
+    @media (max-width: 640px) {
+      h1 { font-size: 34px; }
+      .bar { grid-template-columns: 1fr; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Suprabhatha interiors, one brief</h1>
+    <p class="lede">East-facing villa, 32'6" × 50', Suprabhatha Villas near Kollur. November 2026.</p>
+    <div class="chips" id="sections"></div>
+    <div id="view"></div>
+    <footer>
+      Planning brief for conversations with a designer, carpenter, or family. Directions assume the front door faces east. The working drawings override the brochure room sizes.
+    </footer>
+  </main>
+  <script>
+    const SPEND = [
+      ["Light and ceilings", 4.0],
+      ["Lime plaster on four walls", 1.6],
+      ["Kitchen and appliances", 4.5],
+      ["Drawing and dining", 3.1],
+      ["Master bed, dress, chair", 2.7],
+      ["Parents, office, lounge, pooja", 3.15],
+      ["Theatre, sit-out, terrace", 3.0],
+      ["Linen, plants, contingency", 2.0]
+    ];
+    const total = SPEND.reduce((sum, row) => sum + row[1], 0);
+
+    const SECTIONS = [
+      ["household", "Household"],
+      ["budget", "Budget"],
+      ["house", "House details"],
+      ["specs", "Specifications"],
+      ["design", "Design ideas"],
+      ["questions", "Questions"]
+    ];
+
+    const FLOORS = [
+      ["ground", "Ground floor"],
+      ["first", "First floor"],
+      ["second", "Second floor"]
+    ];
+
+    const AREAS = [
+      {
+        id: "parents", floor: "ground", label: "Parents' room",
+        size: "13'7½\" × 11'6\", plus dress and a 6'6\" × 8' toilet",
+        vastu: "The front door faces east, so this rear room is west. Queen bed, head on the east wall, feet to the west, clear of door D1. Do not put the head on the dress and toilet wall, and do not put it north. The toilet door opens into the dress, not onto the bed.",
+        lesson: "Bijoy Jain: a plain wood bed and an empty floor. Laurie Baker: no extra surface. This is the quiet room.",
+        shot: "Camera from the door. Queen bed, one table and one chair at the side window, wide empty floor, warm ivory walls, no sofa and no television.",
+        walls: [
+          ["East wall", "The headboard wall. Plain ivory. Their rest. No picture, no lime."],
+          ["West wall", "The tall narrow window. A slit of light, sheer linen, nothing else."],
+          ["Window side", "One table and one chair. The place a person sits in the morning."],
+          ["Dress side", "Left blank. The story of this room is how empty it stays."]
+        ],
+        materials: [
+          ["Floor", "Builder large-format vitrified tile, light beige, matt. Do not polish it."],
+          ["Walls", "Birla putty and matt emulsion, warm ivory with a yellow undertone. Not grey, not pure white. No lime plaster."],
+          ["Ceiling", "Same warm ivory, matt, at 10 feet. No false ceiling. One moderate 2700K downlight on a dimmer, and one bedside lamp."],
+          ["Bed", "Queen, 5' × 6'6\". Plain teak-toned wood headboard, about 4 feet high. Light cotton bedding."],
+          ["Dress", "Light oak full-height wardrobe for their clothes only. No second wardrobe in the bedroom."],
+          ["Bath", "Builder anti-skid tile, vanity, and fittings. Add only a 3000K lamp. No glass partition."],
+          ["Windows", "Sheer linen on W2, 4' × 4'6\", and on the tall W4, 2' × 6'6\". White UPVC stays."]
+        ]
+      },
+      {
+        id: "drawing", floor: "ground", label: "Drawing",
+        size: "15' × 16'7½\". Main door 4' × 8'. Window W1 is 8' × 4'6\"",
+        vastu: "Keep the heavier seats on the south and west sides so the east window and the lighter corner stay open. Do not block the path from the main door to the stair. No puja, and no television, in this room.",
+        lesson: "Project Reframe: few frames, a lime wall, seats that face each other. Geoffrey Bawa: the garden window is the view, so the curtain is sheer. About ten guests come once in a while, after dinner.",
+        shot: "Camera inside the teak door. Two sofas facing each other, four loose chairs, three black frames on the lime wall, the garden window at the right, floor still visible in the middle.",
+        walls: [
+          ["Wall opposite W1", "Lime plaster and three handmade frames in one row. The only pictures in the house."],
+          ["Window wall", "The garden, through sheer linen. Geoffrey Bawa: the view is the decoration. No window seat."],
+          ["Door wall", "The teak door from the east road, and a closed shoe cabinet. Arrival, then the shoes disappear."],
+          ["Stair side", "Left bare, so a path remains when ten people stand here after dinner."]
+        ],
+        materials: [
+          ["Floor", "Builder light beige vitrified tile, matt, large format."],
+          ["Lime wall", "The wall opposite W1. Hand-troweled lime plaster, warm ivory, visible trowel, no paint on top."],
+          ["Other walls", "Warm ivory matt emulsion, same as the parents' room."],
+          ["Ceiling", "Flat gypsum, 2 inch shadow gap, warm ivory. Dimmable 2700K downlights, low for conversation. No coffers and no cove pattern."],
+          ["Seating", "Cream linen three-seat and two-seat, facing. Four light oak chairs with linen seats. One small round oak table. Clay throw on one sofa."],
+          ["Art", "Three black frames, one size, one row, at eye height. Handmade pictures."],
+          ["Entry", "Closed teak-toned shoe cabinet beside the main door. Split AC on a painted wall, never on the lime."],
+          ["Window", "Undyed linen sheer. White UPVC. No heavy drape."]
+        ]
+      },
+      {
+        id: "kitchen", floor: "ground", label: "Kitchen and dining",
+        size: "13'7½\" × 16'. W5 is 5' × 4'6\". W6 is 4' × 3' over the counter",
+        vastu: "Fire sits toward the southeast of this room: the gas hob on that run. The sink takes the window for light and for water, toward the north or east opening. The cook should be able to face east. Induction sits beside the gas so two people can work. The fridge is not in the northeast corner.",
+        lesson: "Project Reframe: sage shutters, a honed dark stone, warm pendants, and a clear fridge door. His wife or the cook works here. Five or six eat every day. About ten come for dinner once in a while.",
+        shot: "Camera from the room door. L-shaped sage counter, gas and induction side by side, oak table set for six, two amber pendants, morning light on the stone.",
+        walls: [
+          ["Work walls", "Sage shutters and honed dark stone. His wife or the cook. Gas and induction side by side."],
+          ["Window wall", "The low window over the counter. Daylight on the work, a sheer, no open shelves of jars."],
+          ["Dining side", "Warm ivory, two amber pendants, the table of six. The leaf comes out only when guests stay for dinner."]
+        ],
+        materials: [
+          ["Floor", "Builder light beige vitrified tile, matt."],
+          ["Shutters", "Sage green, grey-green not mint, flat slab, matt PU or laminate. Matte black handles. No glass doors."],
+          ["Counter", "Honed dark green granite or quartzite, 20 mm, low sheen. Not polished marble."],
+          ["Dado", "Replace the 2-foot builder tile with a narrow off-white fluted tile, matt, 2 feet high only."],
+          ["Cooktops", "Four-burner gas, and a separate induction with its own power point."],
+          ["Table", "Oak table for six, linen seats. One leaf stored in the tall unit, used only for the rare dinner."],
+          ["Light", "Two amber glass pendants, 2700K, dimmer, over the table. A 3000K strip under the cabinets on its own switch."],
+          ["Walls and ceiling", "Warm ivory matt. No false ceiling. Fridge face clear, paneled in sage if it is built in."]
+        ]
+      },
+      {
+        id: "entry", floor: "ground", label: "Parking, utility, stair",
+        size: "Parking 10'10½\" × 11'9\". Stair window SW2 is 8' × 10'",
+        vastu: "The main door is already on the east, which is the right face for this house. Leave it. Do not add a threshold shrine. Shoes stop inside the drawing, not in the parking. The stair is the light well: nothing covers SW2.",
+        lesson: "B.V. Doshi: light from the side, down the stair, is the spine of the house. Laurie Baker: do not clad it. The washing machine stays in its niche.",
+        shot: "One view of the teak door from the granite parking. One view up the stair with the tall window bare and a single warm light at the landing.",
+        walls: [
+          ["The 10-foot window", "The light well of the house. No curtain, no cladding. B.V. Doshi: light from the side is the spine."],
+          ["Other stair walls", "Warm ivory only. A single lamp at each landing. No chandelier."],
+          ["Parking face", "Unpolished granite and the teak door. Nothing added to the outside of the arrival."],
+          ["Utility wall", "The washing machine is shuttered. Clothes dry in the yard outside, not on the terrace."]
+        ],
+        materials: [
+          ["Parking floor", "Builder unpolished granite. Do not seal it glossy."],
+          ["Stair", "Builder steel-grey leather-finish granite. Wood handrail left as given."],
+          ["Stair walls", "Warm ivory matt emulsion. No stone cladding, no curtain on SW2."],
+          ["Stair light", "One 2700K wall light at each landing. No chandelier."],
+          ["Utility", "Sage or ivory shutter over the washing machine. A drying rod in the yard outside door D3, not on the terrace."],
+          ["Dishwasher", "Move the point to the sink before wiring, then panel it in sage. Until then it stays in the utility niche."]
+        ]
+      },
+      {
+        id: "master", floor: "first", label: "Master",
+        size: "16'1½\" × 11'6\", dress, toilet 8' × 6' with a glass partition",
+        vastu: "Same rule as the room below. Queen bed, head east on the lime wall, feet west. Not against the toilet wall, not north. Door D1 must not point at the foot of the bed.",
+        lesson: "Tadao Ando: one plain wall, and the light on it is the finish. Project Reframe and Bijoy Jain: lime, pale wood, and no carving. Her clothes take the longer rail.",
+        shot: "Camera from D1. Queen bed against a glowing lime wall, reading chair at the 4-foot window, dress door open onto two hanging rails, oak floor.",
+        walls: [
+          ["East wall", "Lime plaster and a wash of warm light. Tadao Ando: the light is the picture. No art on this wall."],
+          ["Window walls", "Sheer linen. One reading chair at the wider window. The narrow window stays bare."],
+          ["Dress walls", "Light oak. Her hanging is the longer wall. His 20 to 30 outfits take the shorter rail. Two people, one closet."],
+          ["Bath walls", "Left as the builder tiled them. Only the lamp changes. The glass partition stays."]
+        ],
+        materials: [
+          ["Floor", "Builder laminated oak, matt. Do not overlay stone."],
+          ["Headboard wall", "Lime plaster, warm ivory, full width behind the bed. A dimmable 2700K wash from the ceiling edge."],
+          ["Other walls", "Warm ivory matt emulsion."],
+          ["Ceiling", "Flat gypsum, shadow gap, warm ivory. Bedside lamp 2700K. No pattern in the ceiling."],
+          ["Bed", "Queen, 5' × 6'6\". Plain light-oak headboard about 4 feet high. Oatmeal linen."],
+          ["Chair", "One oak and linen chair at W2. Sheer on W2 and on the narrow W4."],
+          ["Walk-in", "Light oak carcass. Longer hanging for her, shorter rail and shelves for his 20 to 30 outfits. Mirror on the door. 3000K strip inside the wardrobe. No island."],
+          ["Bath", "Builder tile, vanity, and glass partition. Change only the lamp to 3000K. Do not retile."]
+        ]
+      },
+      {
+        id: "office", floor: "first", label: "Office",
+        size: "16'6\" × 11', marked C.Bed. Window W2 is 4' × 4'6\" toward the road",
+        vastu: "A study should face east or north. Facing the east window puts the screen in the glare, so he sits facing north, with the east window at his side. The desk is freestanding, so the room can change.",
+        lesson: "Doshi: a room that can become something else. One aircraft model is the only sign of aviation. The wall behind him on a call stays empty.",
+        shot: "Camera from the door. Oak desk side-on to a white UPVC window, cream chair, plain ivory wall, light oak wardrobe with one open shelf.",
+        walls: [
+          ["Call wall", "Empty on purpose. A face on a video call has a quiet ground behind it."],
+          ["Window wall", "Morning light from the east, at his side. He faces north, so the screen is not in the glare."],
+          ["Shelf wall", "Books, and one aircraft model. The only science in the house. Peter Zumthor: one object you can name."]
+        ],
+        materials: [
+          ["Floor", "Builder light beige vitrified tile, matt."],
+          ["Walls", "Warm ivory matt emulsion. The call wall has nothing on it."],
+          ["Ceiling", "No false ceiling. Diffuse 3000K downlights, so a video call is not orange. A black task lamp on the desk."],
+          ["Desk", "Freestanding oak, about 5 feet. Cream upholstered chair. Natural wool rug."],
+          ["Storage", "Light oak wardrobe on the side wall. One open niche: books, and one aircraft model."],
+          ["Window", "Undyed linen sheer. Lined only if the road is loud."]
+        ]
+      },
+      {
+        id: "lounge1", floor: "first", label: "Lounge",
+        size: "9'4½\" × 12'. Window W1 is 8' × 4'6\"",
+        vastu: "Too small for a sofa or a shrine. Keep it as the pause between the stair and the pooja. Do not put a heavy cabinet in the corner nearest the pooja door.",
+        lesson: "One chair, as in a Doshi house where the passage is also a place to read.",
+        shot: "One cream chair, a floor lamp, empty vitrified floor, the tall window with a sheer.",
+        walls: [["All four walls", "Warm ivory and empty. The story is a pause on the way to the pooja. One chair, one lamp, no pictures."]],
+        materials: [
+          ["Floor", "Builder light beige vitrified tile, matt."],
+          ["Walls", "Warm ivory matt emulsion. No wood feature wall and no lime. Lime is reserved for the four named walls."],
+          ["Ceiling", "No false ceiling. One 2700K downlight on a dimmer."],
+          ["Furniture", "One linen chair and a small oak side table. A slim floor lamp, 2700K, dimmer."]
+        ]
+      },
+      {
+        id: "pooja", floor: "first", label: "Pooja",
+        size: "4'4\" × 4'9\"",
+        vastu: "Morning puja, by his mother or his wife, one person. The person faces east. The idol faces west. No idol facing south. The room cannot hold a seat or two people.",
+        lesson: "Laurie Baker: a jaali that still lets air and a little light through. No temple kit and no LED strings. Festival flowers live on the drawing shelf, not in this room.",
+        shot: "Camera at the jaali door. A stone ledge, one lamp on, warm ivory lime walls, nothing else.",
+        walls: [["All four walls", "Lime plaster. Morning puja by his mother or his wife. The person faces east. Laurie Baker: the jaali in the door is the only pattern."]],
+        materials: [
+          ["Walls", "Lime plaster on all four inside faces, warm ivory, hand trowel."],
+          ["Floor", "Builder vitrified, or one honed beige stone slab if the tile joint looks wrong in a room this small."],
+          ["Ledge", "Honed light stone, about 3 feet above the floor, deep enough for a lamp, a bell, and vessels."],
+          ["Door", "Builder teak frame. A wood jaali in the shutter, not glass and not a printed film."],
+          ["Light", "One 2700K lamp, bright enough at 7 am, on a dimmer for the rest of the day. No colored light."]
+        ]
+      },
+      {
+        id: "sitout", floor: "first", label: "Sit-out",
+        size: "8'4½\" × 11'9\". Glass door 3' × 7'",
+        vastu: "This is the east edge. Keep it open to the morning. Do not enclose it into a room. The 18-inch wall on the sheet is not a safe guard. Add a railing to about 3'6\".",
+        lesson: "Geoffrey Bawa: two chairs, one plant, and the view. The decoration is the tree.",
+        shot: "Morning, standing in the door. Wood-finish floor, two oak chairs, one pot, a railing, villa roofs beyond.",
+        walls: [["The outer edge", "An 18-inch wall plus a clear railing, so the east stays open. Geoffrey Bawa: two chairs and one plant. The view is the wall."]],
+        materials: [
+          ["Floor", "Builder wood-finish vitrified tile, matt."],
+          ["Wall", "The 18-inch masonry stays. Above it, a clear glass or slim metal railing."],
+          ["Furniture", "Two oak armchairs, linen seats, one small oak table, one charcoal pot with a leafy plant."],
+          ["Door", "White UPVC glass door, as drawn. Sheer only if the sun is hard. No roller blind in a dark colour."]
+        ]
+      },
+      {
+        id: "lounge2", floor: "second", label: "Lounge",
+        size: "15' × 16'7½\". Sliding door SD is 7' × 7'",
+        vastu: "This room faces the terrace, which is east. Keep the sofa off the sliding door so the east stays open. The shelf of souvenirs stays sparse. Do not make this a second drawing.",
+        lesson: "Project Reframe: a tall cubby, mostly empty. Bawa: the sliding door is the wall. One sofa looks out.",
+        shot: "Camera behind one cream sofa. Lime wall at the side of the slider, door open, shallow terrace and pergola beyond.",
+        walls: [
+          ["Wall beside the slider", "Lime plaster, with no art. The last indoor wall before the sky."],
+          ["Cubby wall", "A short grid of boxes, mostly empty. Travel magnets and two photos. Project Reframe: memory without a crowd of objects."],
+          ["Sofa wall", "One cream sofa, facing out. No television."]
+        ],
+        materials: [
+          ["Floor", "Builder light beige vitrified tile, matt."],
+          ["Lime wall", "The wall beside the sliding door. Hand-troweled warm ivory lime. No art on it."],
+          ["Other walls", "Warm ivory matt emulsion."],
+          ["Ceiling", "No false ceiling. Dimmable 2700K downlights."],
+          ["Furniture", "One cream three-seat sofa facing the terrace. A short oak cubby, most boxes empty: magnets, two photos, one book."],
+          ["Door", "White UPVC slider, 7 by 7 feet. Sheer stacked to the side, not across the opening."]
+        ]
+      },
+      {
+        id: "terrace", floor: "second", label: "Terrace",
+        size: "24'6\" × 11', glass railing",
+        vastu: "East and open to the sky. Do not roof the whole slab. Shade only the eastern third, so 7 am is usable and the rest stays open. No soil beds until an engineer checks the load. No shrine and no washing line.",
+        lesson: "Charles Correa: open to sky. Geoffrey Bawa: a light pergola and pots, and then stop. This outdoor room is only 11 feet deep.",
+        shot: "Morning camera from the slider. Most of the stone empty, pergola and cloth shade at the east edge, one table, two chairs, three large pots, villa roofs.",
+        walls: [["No decorated wall", "Charles Correa: open to sky. The glass rail is the edge. A pergola covers only the eastern third, so the morning is usable and the rest stays sky."]],
+        materials: [
+          ["Floor", "Builder wood-finish vitrified tile, matt, sloped as drawn for rain."],
+          ["Edge", "Glass railing as drawn, above the low skirting. Do not replace it with a solid wall."],
+          ["Shade", "Light oak or teak pergola on the east third only. Pale cloth, removable in a storm."],
+          ["Furniture", "One small oak table and two chairs. Three charcoal pots. Low 2700K lights at the floor, off in the daytime."]
+        ]
+      },
+      {
+        id: "theatre", floor: "second", label: "Home theatre",
+        size: "19'1½\" × 11'6\". Two windows, each W4, 2' × 6'6\"",
+        vastu: "The room is west, like the bedrooms below. It is not a bedroom. Screen on a short wall. Seats so no one faces north into a glare. Blackout the two west windows. Do not put the screen on a window wall.",
+        lesson: "Ando, in a smaller way: one dark plain wall and controlled light. Not a cinema hall. No steps, no bar, no star ceiling.",
+        shot: "Long room, one sofa, screen on the short wall with a warm glow behind it, blackout cloth on the tall windows, oak floor.",
+        walls: [
+          ["Short screen wall", "The only dark wall in the house, a deep warm brown, matt. A warm light behind the screen. Darkness and light, with no poster."],
+          ["Window wall", "Blackout. The room can close. The two tall windows disappear at night."],
+          ["Long walls", "Warm ivory, so the dark wall is the only event."]
+        ],
+        materials: [
+          ["Floor", "Builder laminated oak, matt, same family as the master."],
+          ["Screen wall", "Matt paint, deep warm brown, one wall only. Not gloss black."],
+          ["Other walls", "Warm ivory matt emulsion."],
+          ["Ceiling", "Flat gypsum, shadow gap. Dimmable 2700K, plus a hidden warm bias light behind the screen."],
+          ["Seating", "One low sofa in warm grey or cream linen. No recliners in rows."],
+          ["Windows", "Blackout lining, warm ivory face, on both W4 windows."]
+        ]
+      },
+      {
+        id: "store", floor: "second", label: "Store",
+        size: "9' × 4'7½\"",
+        vastu: "A store can sit here. Keep it dry, closed, and without a display. Festival vessels, the spare table leaf if it fits, luggage, and the camera box live here, not in the lounge.",
+        lesson: "Baker: the house stays clear because the store does the holding. No glass door.",
+        shot: "Door open a crack. Oak shelves, closed baskets, warm ivory walls. This is not a hero view.",
+        walls: [["Shelf walls", "What the other rooms refuse to hold: festival vessels, luggage, the camera box, spare linen. Axel Vervoordt: the rooms stay quiet because the store is full."]],
+        materials: [
+          ["Floor", "Builder tile, matt."],
+          ["Walls and ceiling", "Warm ivory matt emulsion. One 3000K bulkhead, not a decorative light."],
+          ["Shelves", "Light oak, full height. Woven baskets for vessels and linen. No open souvenir display."]
+        ]
+      }
+    ];
+
+    const state = { section: "household", floor: "ground", area: "parents" };
+
+    function esc(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    function table(headers, rows) {
+      const head = headers.map((cell) => `<th>${esc(cell)}</th>`).join("");
+      const body = rows.map((row) => `<tr>${row.map((cell) => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("");
+      return `<div class="wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }
+
+    function chips(items, current, attr) {
+      return `<div class="chips${attr === "section" ? "" : " sub"}">${items.map(([id, label]) =>
+        `<button class="chip" type="button" data-${attr}="${id}" aria-pressed="${id === current}">${esc(label)}</button>`
+      ).join("")}</div>`;
+    }
+
+    function household() {
+      return `
+        <h2>Household</h2>
+        <p>He is from Thanedarpally, a village near Nalgonda town, Telangana, and grew up in Yellareddy, Kamareddy district, in a small 1BHK. The house was rural, people hosted each other, and nothing useful was thrown away. The family celebrates Vinayaka Chavithi and Bathukamma. His mother likes a long conversation, and neighbours used to gather at the veranda.</p>
+        <p>He is a software engineer, schooled at Jawahar Navodaya Vidyalaya and NIT Warangal. He works from home two or three days a week and needs a real desk, a chair, and light that is fit for a video call. He plays badminton, photographs while travelling, and follows aviation and rockets. He is opinionated, frugal, and prefers simplicity. He likes trees, gardening, and making things last. The same honesty and frugality describe the whole family.</p>
+        <p>Four people: his father is 50, his mother is 44, his brother is 20 and lives elsewhere, and he lives here. He plans to marry next year. That conversation with his parents is still in progress. She likes a more lavish room. The house is the mix of the two. A daily help comes in. Nobody lives in. There are no pets, and none are planned. He has no children now, so the front bedroom is an office and the desk is freestanding.</p>
+        <p>He wakes at 7–8 am and sleeps by 12:30 am. Energy is high in the morning and drops by about 7 pm. If people are doing something, he joins. Breakfast and dinner are 5 or 6 people, at the kitchen table. His wife or the cook does the cooking. Guests, about 10, come once in a while and usually for dinner. A bar is not a priority. Morning puja is done by his mother or by his wife, one person at a time. Both beds are queens. He has about 20 to 30 outfits. She has more, and both use the master dressing room as a walk-in. He unwinds by sitting outside, keeping plants, cleaning, and reading. Mood is set by dimmed warm light.</p>
+        <h3>Where each interest belongs</h3>
+        ${table(
+          ["What he cares about", "Where it shows up", "What it must not become"],
+          [
+            ["Photography and handmade pictures", "Three black frames in one row on the drawing wall", "A gallery wall"],
+            ["Travel magnets and souvenirs", "A small shelf in the second-floor lounge, mostly empty", "A fridge covered in magnets"],
+            ["Aviation, rockets, Interstellar, Nolan", "One model on the office shelf", "A themed room"],
+            ["Morning puja, Bathukamma, Vinayaka Chavithi", "A lamp bright enough at 7 am in the 4'4\" × 4'9\" room. Festival flowers on the drawing shelf.", "A prefabricated temple with LED strings"],
+            ["Trees, gardening, outdoors", "Pots on the terrace and the first-floor sit-out", "Built-in soil before a structural load check"],
+            ["Reading", "Chair in the master. One chair in the small first-floor lounge.", "A third living room"],
+            ["An occasional dinner for about 10", "A table for six that takes one leaf. Drawing seats for after dinner.", "A ten-seat table every day, or a bar"],
+            ["Tokyo, then San Francisco", "The calm, light, material feel of the rooms", "A copy of either city"]
+          ]
+        )}
+        <p class="note">Reference: <a href="https://www.instagram.com/p/DbpYqNjkule/">studio riev, Project Reframe</a>, the Basheerbagh renovation. Materials there were marble, granite, veneer, lime plaster, and terrazzo.</p>`;
+    }
+
+    function budget() {
+      const max = Math.max(...SPEND.map((row) => row[1]));
+      const bars = SPEND.map(([name, value]) => `
+        <div class="bar">
+          <span>${esc(name)}</span>
+          <div class="track"><div class="fill" style="width:${(value / max) * 100}%"></div></div>
+          <span>₹${value.toFixed(2)} L</span>
+        </div>`).join("");
+      return `
+        <h2>Budget</h2>
+        <div class="stats">
+          <div class="stat"><strong>₹20–25 L</strong><span>Cap, all inclusive</span></div>
+          <div class="stat"><strong>₹${total.toFixed(2)} L</strong><span>This plan</span></div>
+          <div class="stat"><strong>Apr 2027</strong><span>Target finish</span></div>
+        </div>
+        <p>The cap covers furniture, the kitchen, appliances, wardrobes, and lighting. Floors, doors, windows, and bathroom fittings are outside this split, because the builder supplies them. These figures are a planning split for Hyderabad, not quotations.</p>
+        ${bars}
+        <p class="note">Planning split in ₹ lakh. Cap ₹25 lakh. Source: client budget and the working-drawing scope, November 2026.</p>`;
+    }
+
+    function house() {
+      return `
+        <h2>House details</h2>
+        <div class="stats">
+          <div class="stat"><strong>180.56 sq yd</strong><span>Plot, east road</span></div>
+          <div class="stat"><strong>2,830 sft</strong><span>Brochure total, G+2</span></div>
+          <div class="stat"><strong>10 ft</strong><span>Clear height, inferred</span></div>
+        </div>
+        <p>East road at the front. Rear bedrooms are the quiet rooms. The stair and a glass lift sit in the middle. Clear height is taken as 10 feet because the doors are 8 feet and sliding window SW2, on the second-floor stair, is drawn 8'0" × 10'0". The sheets do not print a floor-to-floor level. Sizes below are from the working drawings, which replace the smaller brochure plan.</p>
+        ${table(
+          ["Floor", "Room", "Size", "Opening", "Who uses it"],
+          [
+            ["Ground", "Parents' bedroom, rear", "13'7½\" × 11'6\"", "W2 4'×4'6\", W4 2'×6'6\"", "Father and mother. Dress and a 6'6\" × 8' toilet."],
+            ["Ground", "Drawing", "15' × 16'7½\"", "W1 8'×4'6\". Main door 4'×8'", "Guests, neighbours, his mother. Entry from the parking side."],
+            ["Ground", "Kitchen and dining", "13'7½\" × 16'", "W5 5'×4'6\", W6 4'×3'", "Weekday family. Cooking and dinner in one room."],
+            ["Ground", "Parking", "10'10½\" × 11'9\"", "Open to the east road", "Car. Unpolished granite."],
+            ["First", "Master, rear, beside the stair", "16'1½\" × 11'6\"", "W2 4'×4'6\", W4 2'×6'6\"", "The couple. Dress, toilet 8'×6'."],
+            ["First", "Office, front, marked C.Bed", "16'6\" × 11'", "W2 4'×4'6\" toward the road", "Work, two or three days a week."],
+            ["First", "Sit-out", "8'4½\" × 11'9\"", "Glass door 3'×7'", "The sit-out he asked for. Sheet says an 18\" skirting wall."],
+            ["First", "Lounge", "9'4½\" × 12'", "W1 8'×4'6\"", "One reading chair. Too small for a sofa."],
+            ["First", "Pooja", "4'4\" × 4'9\"", "Off the lounge", "Daily puja only."],
+            ["Second", "Lounge", "15' × 16'7½\"", "Sliding door 7'×7'", "One sofa facing the terrace."],
+            ["Second", "Terrace", "24'6\" × 11'", "Glass railing", "Morning sit. Most of the slab stays empty."],
+            ["Second", "Home theatre", "19'1½\" × 11'6\"", "Two W4 windows, 2'×6'6\"", "One sofa and a screen. Brother does not live here."],
+            ["Second", "Store", "9' × 4'7½\"", "Door 2'9\" × 8'", "Luggage, festival vessels, extra linen."]
+          ]
+        )}
+        <p class="note">Brochure areas: ground 1,085 sft, first 1,085 sft, terrace slab 660 sft, total 2,830 sft. Source: 32'6" × 50' east working plans.</p>
+        <h3>Door and window schedule</h3>
+        ${table(
+          ["Mark", "What it is", "Size"],
+          [
+            ["MD", "Teak main door, parking into the drawing", "4'0\" × 8'0\""],
+            ["D1", "Teak internal door", "3'3\" × 8'0\""],
+            ["D2", "Teak internal door", "2'9\" × 8'0\""],
+            ["D3", "Teak door, kitchen to the outside", "2'6\" × 8'0\""],
+            ["D4", "Teak door, powder room", "2'6\" × 6'0\""],
+            ["GD", "UPVC glass door, first-floor sit-out", "3'0\" × 7'0\""],
+            ["SD", "UPVC sliding door, second lounge to terrace", "7'0\" × 7'0\""],
+            ["W1", "UPVC window, drawing and lounges", "8'0\" × 4'6\""],
+            ["W2", "UPVC window, bedrooms", "4'0\" × 4'6\""],
+            ["W4", "UPVC window, tall and narrow", "2'0\" × 6'6\""],
+            ["W5", "UPVC window, kitchen side", "5'0\" × 4'6\""],
+            ["W6", "UPVC window, over the kitchen counter", "4'0\" × 3'0\""],
+            ["SW1", "UPVC window", "8'0\" × 5'6\""],
+            ["SW2", "UPVC window, second-floor stair", "8'0\" × 10'0\""]
+          ]
+        )}
+        <p class="note">Ventilators: V1 2'0" × 3'0", V2 1'6" × 3'0", V3 1'6" × 1'6", V4 2'6" × 1'6". Windows are UPVC with a mosquito-mesh track.</p>
+        <div class="callout"><strong>The sit-out wall</strong>The first-floor sit-out is drawn with an 18-inch skirting wall. That is too low to be the only guard. Ask the builder for the railing above it.</div>`;
+    }
+
+    function specs() {
+      return `
+        <h2>Specifications</h2>
+        <p>These are the builder's finishes. Leave them in place. Interior money goes on top of them.</p>
+        ${table(
+          ["Item", "What the builder provides"],
+          [
+            ["Structure", "RCC frame, wind and seismic zone II. External walls 9 inches, internal walls 4½ inches."],
+            ["Doors", "Teak-engineered frames and shutters, 8 feet high, including the main door. Powder-room door is 6 feet."],
+            ["Windows", "UPVC or aluminium sliding windows and French doors, with a mosquito-mesh track."],
+            ["Drawing, kitchen, parents, office, lounges", "Large-format vitrified tile. Kajaria, RAK, Johnson, or equivalent."],
+            ["Master and home theatre", "Laminated wooden flooring."],
+            ["Stair", "Leather-finish granite, steel grey."],
+            ["Sit-out and terrace", "Wood-finish vitrified tile."],
+            ["Parking", "Unpolished granite."],
+            ["Bathrooms", "Anti-skid vitrified tile to sill level. Vanity basin, premium fittings, wet and dry areas. Glass partition in the master bath only."],
+            ["Kitchen wall", "Glazed vitrified tile, 2 feet above the platform."],
+            ["Paint", "Internal Royal emulsion over two coats of Birla putty. External emulsion on texture."],
+            ["Electrical", "Concealed copper wiring, three-phase prepaid meter, full DG backup, split-AC points, two-way fan and light switches in bedrooms."],
+            ["Utility points", "Dishwasher and washing machine beside the machine niche at the stair, not on the kitchen platform."],
+            ["Other", "Lift provision, intercom, fibre, video door bell, EV charging provision, solar-heater or geyser points in every bath."]
+          ]
+        )}
+        <div class="callout warn"><strong>One point to move before wiring</strong>If the dishwasher is to sit in the kitchen, that utility point has to move before the wiring is closed.</div>`;
+    }
+
+    function questions() {
+      return `
+        <h2>Questions still open</h2>
+        <p>These are the answers that would change a drawing. What we already know is in the other chips.</p>
+        <h3>Who will actually be here</h3>
+        <p>After the wedding, do your parents keep the ground-floor room every night, or do they also travel? Does your brother stay overnight, and for how many nights? Where should an overnight friend sleep, since the front room is the office and the theatre is not a bedroom? Will she move in at possession, in April 2027? Does she work from home, and does she need a corner of the office?</p>
+        <h3>A day in the kitchen</h3>
+        <p>His wife or the cook cooks. Gas and induction are both in. Five or six eat daily, and about 10 come for dinner once in a while. Still open: what hours is the cook in the house? Is the kitchen vegetarian only? Which appliances are you bringing? Where should wet waste go if you want to compost?</p>
+        <h3>Puja and the two festivals</h3>
+        <p>Morning puja is done by your mother or your wife. Still open: what has to live on the ledge, idols, photographs, a bell, oil, vessels? For Bathukamma, how large is the arrangement, and is it made in the kitchen or set in the drawing? For Vinayaka Chavithi, is the idol only in the pooja room?</p>
+        <h3>Sleep, work, and heat</h3>
+        <p>Both beds are queens, with the head to the east. Still open: which side of the bed do you sleep on, and which side is the reading side? Do you need the master dark at 7 am? How many hours are you on video calls, and must the office door close against the lounge? One laptop, or a larger screen? Which rooms need air conditioning from the first summer?</p>
+        <h3>Clothes, shoes, and trips</h3>
+        <p>You have 20 to 30 outfits. She has more. Both hang in the master walk-in. Still open: how many pairs of shoes, and do they come off only at the main door? Sarees, or mostly other clothes, for your mother? How often are you away with a camera, and does the kit need a shelf in the office or a box in the store? About how many books?</p>
+        <h3>Guests and the outdoors</h3>
+        <p>About 10 guests come once in a while, usually for dinner. Still open: mornings on the terrace, or on the first-floor sit-out? Do your parents want the sit-out in the evening? Where should clothes dry, the utility yard or a screened corner of the terrace? Ornamental plants only, or herbs and vegetables in pots?</p>
+        <h3>If the money runs short</h3>
+        <p>Rank these if one has to wait: the lime plaster, the kitchen stone, the theatre, the terrace shade, the dress wardrobes. Your parents' own reference images are still to come. Anything in a house you have lived in that you refuse to repeat?</p>`;
+    }
+
+    function design() {
+      const onFloor = AREAS.filter((item) => item.floor === state.floor);
+      const area = onFloor.find((item) => item.id === state.area) || onFloor[0];
+      state.area = area.id;
+      return `
+        <h2>One house, one morning</h2>
+        <p>The whole house tells one story: a morning in Thanedarpally, carried into a quiet modern room. The east door and the stair window bring the day in. His parents keep a plain room with an empty floor. The couple keeps lime, oak, and a dim warm light. Science appears once, as one aircraft on the office shelf. Festivals stay in the store and come out into the drawing. A wall tells its story by the material, the light on it, and the one thing it is allowed to hold.</p>
+        <p>That is the method of Tadao Ando, Peter Zumthor, Bijoy Jain, Vincent Van Duysen, Axel Vervoordt, and Rose Uniacke, set in the climate of Geoffrey Bawa, B.V. Doshi, Charles Correa, and Laurie Baker, and in the materials of <a href="https://www.instagram.com/p/DbpYqNjkule/">studio riev, Project Reframe</a>. One palette: warm ivory matt paint, lime on the drawing wall opposite the garden window, the master wall behind the bed, the second-floor lounge wall beside the slider, and the pooja. Light beige matt tile, matt oak where the builder already gives wood, sage in the kitchen, honed dark green stone, matte black metal, undyed linen, and 2700K lamps. The office ceiling is 3000K so a face on a call stays true.</p>
+        ${chips(FLOORS, state.floor, "floor")}
+        ${chips(onFloor.map((item) => [item.id, item.label]), area.id, "area")}
+        <h3>${esc(area.label)}</h3>
+        <p class="note">${esc(area.size)}</p>
+        <p>${esc(area.vastu)}</p>
+        <p>${esc(area.lesson)}</p>
+        <h3>Every wall</h3>
+        ${table(["Wall", "Its story"], area.walls)}
+        ${table(["Surface", "What to model"], area.materials)}
+        <div class="callout"><strong>The 3D view</strong>${esc(area.shot)}</div>`;
+    }
+
+    const renderers = { household, budget, house, specs, design, questions };
+
+    function render() {
+      document.getElementById("sections").innerHTML = chips(SECTIONS, state.section, "section");
+      document.getElementById("view").innerHTML = renderers[state.section]();
+      const hash = state.section === "design"
+        ? `#design/${state.floor}/${state.area}`
+        : `#${state.section}`;
+      if (location.hash !== hash) history.replaceState(null, "", hash);
+    }
+
+    function readHash() {
+      const parts = location.hash.replace("#", "").split("/");
+      if (SECTIONS.some(([id]) => id === parts[0])) state.section = parts[0];
+      if (parts[0] === "design") {
+        if (FLOORS.some(([id]) => id === parts[1])) state.floor = parts[1];
+        if (AREAS.some((item) => item.id === parts[2] && item.floor === state.floor)) state.area = parts[2];
+      }
+    }
+
+    document.body.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-section], button[data-floor], button[data-area]");
+      if (!button) return;
+      if (button.dataset.section) state.section = button.dataset.section;
+      if (button.dataset.floor) {
+        state.floor = button.dataset.floor;
+        const first = AREAS.find((item) => item.floor === state.floor);
+        state.area = first.id;
+      }
+      if (button.dataset.area) state.area = button.dataset.area;
+      render();
+    });
+
+    window.addEventListener("hashchange", () => { readHash(); render(); });
+    readHash();
+    render();
+  </script>
+</body>
+</html>
